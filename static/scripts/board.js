@@ -1,3 +1,10 @@
+document.getElementById("upload").addEventListener("change", function (event) {
+  const fileName = event.target.files[0]
+    ? event.target.files[0].name
+    : "No file chosen";
+  document.getElementById("file-name").textContent = fileName;
+});
+
 const messageForm = document.getElementById("messageForm");
 messageForm.addEventListener("submit", async function (event) {
   event.preventDefault();
@@ -10,23 +17,31 @@ messageForm.addEventListener("submit", async function (event) {
     });
 
     const result = await response.json();
+    console.log(result);
 
     if (response.ok) {
-      const messagesDiv = document.getElementById("messages");
+      const messagesContainerDiv = document.querySelector(
+        ".messages-container"
+      );
       const messageDiv = document.createElement("div");
-
-      const messageParagraph = document.createElement("p");
-      messageParagraph.textContent = result.message;
+      messageDiv.className = "message-box";
 
       const messageImage = document.createElement("img");
       messageImage.src = result.file_url;
       messageImage.alt = "Uploaded Image";
-      messageImage.style.maxWidth = "200px";
-
-      messageDiv.appendChild(messageParagraph);
       messageDiv.appendChild(messageImage);
 
-      messagesDiv.appendChild(messageDiv);
+      const usernameDiv = document.createElement("div");
+      usernameDiv.className = "div-username";
+      usernameDiv.textContent = result.username;
+      messageDiv.appendChild(usernameDiv);
+
+      const messageParagraph = document.createElement("p");
+      messageParagraph.className = "p-message-text";
+      messageParagraph.textContent = result.message;
+      messageDiv.appendChild(messageParagraph);
+
+      messagesContainerDiv.appendChild(messageDiv);
     } else {
       alert("Failed to submit message");
     }
