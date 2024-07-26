@@ -20,28 +20,7 @@ messageForm.addEventListener("submit", async function (event) {
     console.log(result);
 
     if (response.ok) {
-      const messagesContainerDiv = document.querySelector(
-        ".messages-container"
-      );
-      const messageDiv = document.createElement("div");
-      messageDiv.className = "message-box";
-
-      const messageImage = document.createElement("img");
-      messageImage.src = result.file_url;
-      messageImage.alt = "Uploaded Image";
-      messageDiv.appendChild(messageImage);
-
-      const usernameDiv = document.createElement("div");
-      usernameDiv.className = "div-username";
-      usernameDiv.textContent = result.username;
-      messageDiv.appendChild(usernameDiv);
-
-      const messageParagraph = document.createElement("p");
-      messageParagraph.className = "p-message-text";
-      messageParagraph.textContent = result.message;
-      messageDiv.appendChild(messageParagraph);
-
-      messagesContainerDiv.appendChild(messageDiv);
+      displayMessage(result);
     } else {
       alert("Failed to submit message");
     }
@@ -49,3 +28,43 @@ messageForm.addEventListener("submit", async function (event) {
     console.error("Error", error);
   }
 });
+
+async function fetchMessages() {
+  try {
+    const response = await fetch("/messages");
+    const result = await response.json();
+    if (response.ok) {
+      const messages = result.data.messages;
+      messages.forEach(displayMessage);
+    } else {
+      console.error("Failed to fetch messages");
+    }
+  } catch (error) {
+    console.error("Error", error);
+  }
+}
+
+function displayMessage(result) {
+  const messagesContainerDiv = document.querySelector(".messages-container");
+  const messageDiv = document.createElement("div");
+  messageDiv.className = "message-box";
+
+  const messageImage = document.createElement("img");
+  messageImage.src = result.file_url;
+  messageImage.alt = "Uploaded Image";
+  messageDiv.appendChild(messageImage);
+
+  const usernameDiv = document.createElement("div");
+  usernameDiv.className = "div-username";
+  usernameDiv.textContent = result.username;
+  messageDiv.appendChild(usernameDiv);
+
+  const messageParagraph = document.createElement("p");
+  messageParagraph.className = "p-message-text";
+  messageParagraph.textContent = result.message;
+  messageDiv.appendChild(messageParagraph);
+
+  messagesContainerDiv.appendChild(messageDiv);
+}
+
+document.addEventListener("DOMContentLoaded", fetchMessages);

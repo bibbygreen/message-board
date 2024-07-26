@@ -27,3 +27,17 @@ async def message_submission(username: str, message: str, file: UploadFile):
     finally:
         cursor.close()
         connection.close()
+
+async def get_all_messages():
+    connection = get_db_connection()
+    cursor = connection.cursor()
+    try:
+        cursor.execute("SELECT username, content, file_url FROM messages")
+        messages = cursor.fetchall()
+        return messages
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+        return []
+    finally:
+        cursor.close()
+        connection.close()
