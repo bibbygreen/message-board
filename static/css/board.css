@@ -73,6 +73,7 @@ hr{
   justify-content: center;
   flex-wrap: wrap;
   margin: auto;
+  margin-bottom: 100px;
 }
 .message-box{
   width: 282px;
