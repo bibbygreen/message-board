@@ -27,6 +27,9 @@ messageForm.addEventListener("submit", async function (event) {
   } catch (error) {
     console.error("Error", error);
   }
+
+  messageForm.reset();
+  document.getElementById("file-name").textContent = "";
 });
 
 async function fetchMessages() {
