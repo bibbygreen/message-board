@@ -11,7 +11,7 @@ messageForm.addEventListener("submit", async function (event) {
 
   const formData = new FormData(this);
   try {
-    const response = await fetch("/submit-message", {
+    const response = await fetch("/api/submit-message", {
       method: "POST",
       body: formData,
     });
@@ -34,7 +34,7 @@ messageForm.addEventListener("submit", async function (event) {
 
 async function fetchMessages() {
   try {
-    const response = await fetch("/messages");
+    const response = await fetch("/api/messages");
     const result = await response.json();
     if (response.ok) {
       const messages = result.data.messages;
